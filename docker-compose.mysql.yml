@@ -24,9 +24,19 @@ services:
 
   webapp:
     container_name: invoiceshelf-variant-mariadb
-    image: ghcr.io/bmanwithab/invoiceshelf-ddc:3.0.0-alpha.15-ddc0.2.1
+    image: ghcr.io/bmanwithab/invoiceshelf-ddc:3.0.0-alpha.15-ddc0.2.1-b4
     environment:
-      - APP_NAME=InvoiceShelf
+      # No APP_NAME here on purpose: the entrypoint writes the environment into
+      # .env unquoted, and this image's brand name contains spaces, which makes
+      # that file invalid and stops the container. The name is a config default
+      # baked into the image instead (ddc/branding).
+
+      # This install is white-labelled: no "Powered by" line under the sign-in
+      # page, the public documents or the document emails.
+      - INVOICESHELF_POWERED_BY=false
+
+      # AGPL section 13: the source of the version actually running.
+      - INVOICESHELF_SOURCE_URL=https://github.com/bmanwithab/InvoiceShelf_v3/tree/{version}
       - APP_ENV=production
       - APP_DEBUG=false
 
