@@ -24,9 +24,18 @@ services:
 
   webapp:
     container_name: invoiceshelf-variant-mariadb
-    image: ghcr.io/bmanwithab/invoiceshelf-ddc:latest
+    image: ghcr.io/bmanwithab/invoiceshelf-ddc:3.0.0-alpha.15-ddc0.2.1-b2
     environment:
-      - APP_NAME=InvoiceShelf
+      # Brand: drives the mail footers and the app's default name.
+      - APP_NAME=Air Reel Technologies
+      - BRAND_NAME=Air Reel Technologies
+
+      # This install is white-labelled: no "Powered by" line under the sign-in
+      # page, the public documents or the document emails.
+      - INVOICESHELF_POWERED_BY=false
+
+      # AGPL section 13: the source of the version actually running is this fork.
+      - INVOICESHELF_SOURCE_URL=https://github.com/bmanwithab/InvoiceShelf_v3/tree/{version}
       - APP_ENV=production
       - APP_DEBUG=false
 
